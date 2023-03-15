@@ -1,6 +1,6 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const blockSize = 50;
+const blockSize = 100;
 const width = canvas.width / blockSize;
 const height = canvas.height / blockSize;
 console.log("colunas:"+ width);
@@ -16,9 +16,8 @@ class Vertice  {
   this.verticeAnteriorMenorCaminho=null}
 }
 class Aresta{
-  constructor(){
- this.verticeInicial=null;
- this.verticeFinal=null;
+  constructor(verticeF){
+ this.verticeFinal=verticeF;
  this.peso=1;
 }
 }
@@ -40,6 +39,35 @@ for (let xindex = 0; xindex < width; xindex++) {
     
 }
 
+function procurarVertice(px, py){
+  let verticefind = Grafo.find(vertice=> vertice.positionX == px && vertice.positionY== py);
 
+  return verticefind;
+  }
+
+Grafo.forEach((vertice)=>{
+  let verticeXY = null;
+  if(vertice.positionX+1 <= width-1){
+     verticeXY =  procurarVertice(vertice.positionX+1 , vertice.positionY);
+     let arestanova  = new Aresta (verticeXY);
+     vertice.arestas.push(arestanova);
+  }
+  if(vertice.positionX-1 >= 0){
+    verticeXY = procurarVertice(vertice.positionX-1 , vertice.positionY);
+    let arestanova  = new Aresta (verticeXY);
+    vertice.arestas.push(arestanova);
+ }
+ if(vertice.positionY+1 <= height-1){
+  verticeXY =  procurarVertice(vertice.positionX , vertice.positionY+1);
+  let arestanova  = new Aresta (verticeXY);
+  vertice.arestas.push(arestanova);
+}
+if(vertice.positionY-1 >= 0){
+  verticeXY =  procurarVertice(vertice.positionX , vertice.positionY-1);
+  let arestanova  = new Aresta (verticeXY);
+  vertice.arestas.push(arestanova);
+}
+})
 
 console.log(Grafo);
+
